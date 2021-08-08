@@ -1,0 +1,33 @@
+{
+  "name": "@justindfuller/entity",
+  "version": "0.0.0",
+  "description": "Organize JavaScript projects by Entity.",
+  "main": "./src/index.js",
+  "bin": {
+    "entity": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "./bin/index.js test ./fixtures"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JustinDFuller/entity.git"
+  },
+  "keywords": [
+    "javascript",
+    "entity",
+    "organization",
+    "structure",
+    "test",
+    "modules"
+  ],
+  "author": "Justin Fuller <justindanielfuller@gmail.com>",
+  "license": "SEE LICENSE IN <LICENSE>",
+  "bugs": {
+    "url": "https://github.com/JustinDFuller/entity/issues"
+  },
+  "homepage": "https://github.com/JustinDFuller/entity#readme",
+  "dependencies": {
+    "chalk": "^4.1.2"
+  }
+}
