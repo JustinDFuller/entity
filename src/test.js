@@ -5,9 +5,9 @@ const { dim, red } = require('chalk')
 let failed = false
 
 const log = console.log
-const error = m => {
+const error = (...messages) => {
   failed = true
-  log(`\n${red("Error")} ${m}\n`)
+  log("\n", red("Error"), ...messages, "\n")
 }
 
 const cwd = p => path.join(process.cwd(), p)
@@ -59,8 +59,8 @@ async function validateJSFile(f, { directory, files }) {
 
   const filesInCurrentDir = await fs.readdir(directory, { withFileTypes: true })
   for (const prop in r[dir]) {
-    const hasDir = filesInCurrentDir.find(f => f.name === prop)
-    const hasFile = filesInCurrentDir.find(f => f.name === `${prop}.js`)
+    const hasDir = filesInCurrentDir.find(f => f.name.toLowerCase() === prop.toLowerCase())
+    const hasFile = filesInCurrentDir.find(f => f.name.toLowerCase() === `${prop.toLowerCase()}.js`)
     if (!hasDir && !hasFile) {
       error(`Expected to find ${dim(prop)} or ${dim(prop)}.js, exported from ${dim(f.name)}`)
     }

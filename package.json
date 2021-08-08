@@ -4,7 +4,7 @@
   "description": "Organize JavaScript projects by Entity.",
   "main": "./src/index.js",
   "bin": {
-    "entity": "./bin/index.js"
+    "entity": "bin/index.js"
   },
   "scripts": {
     "test": "./bin/index.js test ./fixtures"
@@ -29,5 +29,7 @@
   "homepage": "https://github.com/JustinDFuller/entity#readme",
   "dependencies": {
     "chalk": "^4.1.2"
-  }
+  },
+  "access": "public",
+  "devDependencies": {}
 }
