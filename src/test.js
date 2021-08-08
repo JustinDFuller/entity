@@ -1,25 +1,25 @@
-const { promises: fs } = require('fs')
-const path = require('path')
-const { dim, red } = require('chalk')
+import path from 'path'
+import { promises as fs } from 'fs'
+import chalk from 'chalk'
 
 let failed = false
 
 const log = console.log
 const error = (...messages) => {
   failed = true
-  log("\n", red("Error"), ...messages, "\n")
+  log("\n", chalk.red("Error"), ...messages, "\n")
 }
 
 const cwd = p => path.join(process.cwd(), p)
 
-async function test({ directory }) {
+export async function test({ directory }) {
   try {
     await validateDirectory(path.normalize(directory)) 
     if (!failed) {
-      log("\nResult:", green("OK"))
+      log("\nResult:", chalk.green("OK"))
       process.exit(0)
     } else {
-      log("\nResult:", red("FAILED"))
+      log("\nResult:", chalk.red("FAILED"))
       process.exit(1)
     }
   } catch(e) {
@@ -47,14 +47,14 @@ async function validateDirectory(directory) {
 async function validateJSFile(f, { directory, files }) {
   const relative = path.join(directory, f.name)
   const loc = cwd(relative)
-  const r = require(loc)
+  const r = await import(loc)
 
 
   let dir = path.dirname(loc).split(path.sep)
   dir = dir[dir.length - 1]
 
   if (f.name === "index.js" && !r[dir]) {
-    return error(`in ${dim(relative)}: \n\ttop-level export must match directory ${dim(dir)}.`)
+    return error(`in ${chalk.dim(relative)}: \n\ttop-level export must match directory ${chalk.dim(dir)}.`)
   }
 
   const filesInCurrentDir = await fs.readdir(directory, { withFileTypes: true })
@@ -62,12 +62,8 @@ async function validateJSFile(f, { directory, files }) {
     const hasDir = filesInCurrentDir.find(f => f.name.toLowerCase() === prop.toLowerCase())
     const hasFile = filesInCurrentDir.find(f => f.name.toLowerCase() === `${prop.toLowerCase()}.js`)
     if (!hasDir && !hasFile) {
-      error(`Expected to find ${dim(prop)} or ${dim(prop)}.js, exported from ${dim(f.name)}`)
+      error(`Expected to find ${chalk.dim(prop)} or ${chalk.dim(prop)}.js, exported from ${chalk.dim(f.name)}`)
     }
   }
-}
-
-module.exports = {
-  test,
 }
 

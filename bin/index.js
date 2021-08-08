@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+import { entity } from '../src/index.js';
+
 const args = process.argv.splice(2);
 
 const options = {
@@ -8,7 +10,7 @@ const options = {
 
 switch (args[0]) {
   case "test":
-    require('../src/test').test(options)
+    entity.test(options)
     break
 }
 

@@ -1,8 +1,9 @@
-import { ID } from './ID';
-import { IDs } from './IDs';
-import { New } from "../New";
-import { defaults } from "./defaults";
-import { Time } from './Time';
+import { ID } from './ID.js';
+import { IDs } from './IDs.js';
+import { New } from "./New.js";
+import { defaults } from "./defaults.js";
+import { Time } from './Time.js';
+import { test } from './test.js'
 
 export const entity = {
   ID,
@@ -10,4 +11,5 @@ export const entity = {
   New,
   defaults,
   Time,
+  test,
 }

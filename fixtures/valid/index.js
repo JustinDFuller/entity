@@ -1,7 +1,5 @@
-module.exports = {
-  valid: {
-    withValidSubdirectory: "",
-    withValidJSFile: "",
-    LowerCaseIsFineToo: "",
-  }
+export const valid = {
+  withValidSubdirectory: "",
+  withValidJSFile: "",
+  LowerCaseIsFineToo: "",
 }

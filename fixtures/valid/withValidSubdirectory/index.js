@@ -1,3 +1,1 @@
-module.exports = {
-  withValidSubdirectory: {}
-}
+export const withValidSubdirectory = {}

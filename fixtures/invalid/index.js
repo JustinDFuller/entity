@@ -1,5 +1,3 @@
-module.exports = {
-  invalid: {
-    missingSubDirectory: "",
-  }
+export const invalid = {
+  missingSubDirectory: "",
 }

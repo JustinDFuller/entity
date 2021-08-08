@@ -1,3 +1,1 @@
-module.exports = {
-  LowerCaseIsFineToo: "",
-}
+export const LowerCaseIsFineToo = ""

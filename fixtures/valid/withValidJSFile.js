@@ -1,3 +1,1 @@
-module.exports = {
-  withValidJSFile: {},
-}
+export const withValidJSFile = {}
