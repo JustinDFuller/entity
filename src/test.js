@@ -3,24 +3,30 @@ import { promises as fs } from 'fs'
 import chalk from 'chalk'
 
 let failed = false
+let errored = false
 
-const log = console.log
-const error = (...messages) => {
-  failed = true
-  log("\n", chalk.red("Error"), ...messages, "\n")
+const log = (...args) =>{
+  console.log(...args)
 }
+const error = (...messages) => {
+  log("\n", chalk.red("Error"), ...messages)
+}
+
+const errors = []
 
 const cwd = p => path.join(process.cwd(), p)
 
 export async function test({ directory }) {
   try {
     await validateDirectory(path.normalize(directory)) 
-    if (!failed) {
-      log("\nResult:", chalk.green("OK"))
-      process.exit(0)
+    
+    if (errors.length) {
+      for (const e of errors) {
+        error(e)
+      }
+      log("\nEntities", chalk.red("FAILED"))
     } else {
-      log("\nResult:", chalk.red("FAILED"))
-      process.exit(1)
+      log("Entities OK")
     }
   } catch(e) {
     error("Entities Invalid:", e)
@@ -44,26 +50,35 @@ async function validateDirectory(directory) {
   }
 }
 
-async function validateJSFile(f, { directory, files }) {
-  const relative = path.join(directory, f.name)
-  const loc = cwd(relative)
-  const r = await import(loc)
+async function validateJSFile(f, { directory }) {
+  try {
+    const relative = path.join(directory, f.name)
+    const loc = cwd(relative)
 
+    const r = await import(loc)
 
-  let dir = path.dirname(loc).split(path.sep)
-  dir = dir[dir.length - 1]
-
-  if (f.name === "index.js" && !r[dir]) {
-    return error(`in ${chalk.dim(relative)}: \n\ttop-level export must match directory ${chalk.dim(dir)}.`)
-  }
-
-  const filesInCurrentDir = await fs.readdir(directory, { withFileTypes: true })
-  for (const prop in r[dir]) {
-    const hasDir = filesInCurrentDir.find(f => f.name.toLowerCase() === prop.toLowerCase())
-    const hasFile = filesInCurrentDir.find(f => f.name.toLowerCase() === `${prop.toLowerCase()}.js`)
-    if (!hasDir && !hasFile) {
-      error(`Expected to find ${chalk.dim(prop)} or ${chalk.dim(prop)}.js, exported from ${chalk.dim(f.name)}`)
+    if (!Object.keys(r).length) {
+      errors.push(`in ${chalk.dim(relative)}: \n\tExpected module to have exports.`)
     }
+
+    let dir = path.dirname(loc).split(path.sep)
+    dir = dir[dir.length - 1]
+
+    if (f.name === "index.js" && !r[dir]) {
+      errors.push(`in ${chalk.dim(relative)}: \n\tExport must match directory ${chalk.dim(dir)}.`)
+      return
+    }
+
+    const filesInCurrentDir = await fs.readdir(directory, { withFileTypes: true })
+    for (const prop in r[dir]) {
+      const hasDir = filesInCurrentDir.find(f => f.name.toLowerCase() === prop.toLowerCase())
+      const hasFile = filesInCurrentDir.find(f => f.name.toLowerCase() === `${prop.toLowerCase()}.js`)
+      if (!hasDir && !hasFile) {
+        errors.push(`in ${chalk.dim(relative)}: \n\tExpected to find ${chalk.dim(prop + "(.js)")} in this directory.`)
+      }
+    }
+  } catch(e) {
+    errors.push(`Error parsing ${chalk.dim(directory + "/" + f.name)}: ${e.toString()}`)
   }
 }
 
