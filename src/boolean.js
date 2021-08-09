@@ -1,4 +1,4 @@
-export function Number(value = 0) {
+export function Boolean(value = false) {
   return {
     toJSON() {
       return value

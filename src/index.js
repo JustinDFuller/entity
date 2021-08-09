@@ -6,6 +6,7 @@ import { Time } from './Time.js';
 import { test } from './test.js'
 import { String } from './string.js';
 import { Number } from './number.js';
+import { Boolean } from './boolean.js';
 
 export const entity = {
   ID,
@@ -15,5 +16,6 @@ export const entity = {
   Time,
   String,
   Number,
+  Boolean,
   test,
 }
