@@ -4,6 +4,8 @@ import { New } from "./New.js";
 import { defaults } from "./defaults.js";
 import { Time } from './Time.js';
 import { test } from './test.js'
+import { String } from './string.js';
+import { Number } from './number.js';
 
 export const entity = {
   ID,
@@ -11,5 +13,7 @@ export const entity = {
   New,
   defaults,
   Time,
+  String,
+  Number,
   test,
 }

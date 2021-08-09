@@ -1,6 +1,6 @@
 {
   "name": "@justindfuller/entity",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Organize JavaScript projects by Entity.",
   "main": "./src/index.js",
   "bin": {
